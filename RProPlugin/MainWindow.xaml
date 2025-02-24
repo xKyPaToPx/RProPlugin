@@ -7,7 +7,36 @@
         xmlns:local="clr-namespace:RProPlugin"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
-    </Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <DataGrid Grid.Row="0" 
+                      Name="MyDataGrid"
+                      ItemsSource="{Binding Components}" 
+                      AutoGenerateColumns="False" 
+                      CanUserAddRows="False">
+                <DataGrid.Columns>
+                    <!-- Колонка с чекбоксом -->
+                    <DataGridTemplateColumn Header="Выбрать" Width="Auto">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" 
+                                          HorizontalAlignment="Center"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <!-- Колонка с именем -->
+                    <DataGridTextColumn Header="Имя" 
+                                        Binding="{Binding Name}" 
+                                        Width="*"/>
+                    <!-- Колонка с категорией -->
+                    <DataGridTextColumn Header="Категория" 
+                                        Binding="{Binding Category}" 
+                                        Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button Click="ReadJsonOnClick" Grid.Row="1">Click me</Button>
+        </Grid>
 </Window>

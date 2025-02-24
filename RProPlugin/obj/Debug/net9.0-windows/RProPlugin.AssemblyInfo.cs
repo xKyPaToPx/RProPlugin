@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RProPlugin")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8b92793013b5edb935933dfcc9aa6d142a00488d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+36071df523aae2258818df9753eb4eddeee1b64b")]
 [assembly: System.Reflection.AssemblyProductAttribute("RProPlugin")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RProPlugin")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

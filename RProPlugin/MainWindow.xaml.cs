@@ -38,7 +38,7 @@ public partial class MainWindow : Window
 
     private void ReadJsonOnClick(object sender, RoutedEventArgs e)
     {
-        string json = File.ReadAllText("../../../specification.json");
+        string json = File.ReadAllText("../../../specification2.json");
         _jsonData = JsonSerializer.Deserialize<List<Component>>(json);
         if (_jsonData.Count == 0)
         {

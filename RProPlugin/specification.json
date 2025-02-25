@@ -43,7 +43,8 @@
         "SimulationLevel": 0, 
         "Advanced::ProfileConstruction": true, 
         "Advanced::SingleLeg": false, 
-        "Physical": false
+        "Physical": false,
+        "IsSelected": false
     }, 
     {
         "Category": "Роботы", 
@@ -104,6 +105,7 @@
         "L01Z": 165.2, 
         "SimulationLevel": 0, 
         "WristValid": true, 
-        "SignalActions::TraceZOffset": 0.0
+        "SignalActions::TraceZOffset": 0.0,
+        "IsSelected": false
     }
 ]

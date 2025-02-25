@@ -4,16 +4,16 @@ namespace RProPlugin.Models;
 
 public class ComponentPrice : INotifyPropertyChanged
 {
-    private string _name;
+    private string _bomName;
     private decimal _price;
 
-    public string Name
+    public string BomName
     {
-        get => _name;
+        get => _bomName;
         set
         {
-            _name = value;
-            OnPropertyChanged(nameof(Name));
+            _bomName = value;
+            OnPropertyChanged(nameof(BomName));
         }
     }
 
@@ -22,17 +22,15 @@ public class ComponentPrice : INotifyPropertyChanged
         get => _price;
         set
         {
-            if (_price != value)
-            {
-                _price = value;
-                OnPropertyChanged(nameof(Price));
-            }
+            _price = value;
+            OnPropertyChanged(nameof(Price));
         }
     }
+    
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    protected virtual void OnPropertyChanged(string propertyName)
+    protected void OnPropertyChanged(string propertyName)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }

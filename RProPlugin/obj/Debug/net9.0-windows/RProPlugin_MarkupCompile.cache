@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\
+D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\
 RProPlugin
 none
 false
 TRACE;DEBUG;NET;NET9_0;NETCOREAPP
-C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\App.xaml
-2-315581016
+D:\Code\RProPlugin\RProPlugin\App.xaml
+3-723562546
 
-7-1151036435
-2411449722094
-EditPricesWindow.xaml;MainWindow.xaml;
+81516959533
+206968454270
+EditPricesWindow.xaml;EditSinglePriceWindow.xaml;MainWindow.xaml;
 
-True
+False
 

@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\KyPaToP\\RiderProjects\\RProPlugin\\RProPlugin\\RProPlugin.csproj": {}
+    "D:\\Code\\RProPlugin\\RProPlugin\\RProPlugin.csproj": {}
   },
   "projects": {
-    "C:\\Users\\KyPaToP\\RiderProjects\\RProPlugin\\RProPlugin\\RProPlugin.csproj": {
+    "D:\\Code\\RProPlugin\\RProPlugin\\RProPlugin.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\KyPaToP\\RiderProjects\\RProPlugin\\RProPlugin\\RProPlugin.csproj",
+        "projectUniqueName": "D:\\Code\\RProPlugin\\RProPlugin\\RProPlugin.csproj",
         "projectName": "RProPlugin",
-        "projectPath": "C:\\Users\\KyPaToP\\RiderProjects\\RProPlugin\\RProPlugin\\RProPlugin.csproj",
-        "packagesPath": "C:\\Users\\KyPaToP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\KyPaToP\\RiderProjects\\RProPlugin\\RProPlugin\\obj\\",
+        "projectPath": "D:\\Code\\RProPlugin\\RProPlugin\\RProPlugin.csproj",
+        "packagesPath": "C:\\Users\\YakovPC\\.nuget\\packages\\",
+        "outputPath": "D:\\Code\\RProPlugin\\RProPlugin\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\KyPaToP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\YakovPC\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -51,13 +51,9 @@
         "net9.0-windows7.0": {
           "targetAlias": "net9.0-windows",
           "dependencies": {
-            "MahApps.Metro": {
+            "Extended.Wpf.Toolkit": {
               "target": "Package",
-              "version": "[2.4.10, )"
-            },
-            "MahApps.Metro.IconPacks": {
-              "target": "Package",
-              "version": "[5.1.0, )"
+              "version": "[4.6.0, )"
             }
           },
           "imports": [
@@ -79,7 +75,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

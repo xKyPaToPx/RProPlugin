@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:RProPlugin"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"  
         mc:Ignorable="d"
         Title="EditPricesWindow" Height="450" Width="800">
     <Grid>
@@ -13,30 +14,16 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Панель добавления -->
+        <!-- Панель добавления с watermark для имени и цены -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="5">
-            <TextBox x:Name="NewNameTextBox" 
-                     Width="200" 
-                     Margin="0,0,5,0" 
-                     Text="{x:Null}" 
-                     GotFocus="NewNameTextBox_GotFocus" 
-                     LostFocus="NewNameTextBox_LostFocus">
-                <TextBox.Style>
-                    <Style TargetType="TextBox">
-                        <Setter Property="Foreground" Value="Gray"/>
-                        <Setter Property="Text" Value="Введите имя"/>
-                        <Style.Triggers>
-                            <Trigger Property="IsFocused" Value="True">
-                                <Setter Property="Text" Value="{x:Null}"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBox.Style>
-            </TextBox>
-            <TextBox x:Name="NewPriceTextBox" 
-                     Width="100" 
-                     Margin="0,0,5,0" 
-                     Text="0.00"/>
+            <xctk:WatermarkTextBox x:Name="NewNameTextBox" 
+                                  Width="200" 
+                                  Margin="0,0,5,0" 
+                                  Watermark="Введите BOM имя" />
+            <xctk:WatermarkTextBox x:Name="NewPriceTextBox" 
+                                  Width="100" 
+                                  Margin="0,0,5,0" 
+                                  Watermark="Введите цену" />
             <Button Content="Добавить" Click="AddPrice_Click" Width="100"/>
         </StackPanel>
 
@@ -47,13 +34,12 @@
                   CanUserAddRows="False"
                   CanUserDeleteRows="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Имя" 
-                                  Binding="{Binding Name}" 
-                                  Width="*" 
-                                  IsReadOnly="True"/>
+                <DataGridTextColumn Header="BOM имя" 
+                                    Binding="{Binding BomName, UpdateSourceTrigger=PropertyChanged}" 
+                                    Width="*" />
                 <DataGridTextColumn Header="Цена" 
-                                  Binding="{Binding Price, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                                  Width="*">
+                                    Binding="{Binding Price, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                                    Width="*">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="HorizontalAlignment" Value="Right"/>

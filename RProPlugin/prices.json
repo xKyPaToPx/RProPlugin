@@ -10,5 +10,13 @@
   {
     "BomName": "\u0420\u0430\u0431\u043E\u0442\u043D\u0438\u043A Yakov",
     "Price": 1.0
+  },
+  {
+    "BomName": " Applicator machine",
+    "Price": 1000.00
+  },
+  {
+    "BomName": "TM125S",
+    "Price": 500.00
   }
 ]

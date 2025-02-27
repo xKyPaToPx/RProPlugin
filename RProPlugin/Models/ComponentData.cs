@@ -7,7 +7,7 @@ public class ComponentData : INotifyPropertyChanged
     private string _name;
     private string _bomName;
     private string _category;
-    private bool _isSelected = false;
+    private bool _isSelected;
     private decimal _price = 0; // Значение по умолчанию для цены
     private bool _hasPrice = false; // Флаг наличия цены
 

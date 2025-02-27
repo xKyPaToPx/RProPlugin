@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
 using RProPlugin.Models;
 
 namespace RProPlugin;
@@ -15,7 +19,7 @@ public partial class MainWindow : Window
     ObservableCollection<ComponentData> Components { get; set; }
     private ObservableCollection<ComponentPrice> Prices { get; set; } = new ObservableCollection<ComponentPrice>();
     
-    private string jsonFilePath = "../../../specification2.json";
+    private string jsonFilePath = "../../../specification.json";
     private string jsonPricesFilePath = "../../../prices.json";
     
     public MainWindow()
@@ -133,6 +137,16 @@ public partial class MainWindow : Window
         decimal totalPrice = 0;
         var selectedComponents = Components.Where(c => c.IsSelected).ToList();
         
+        if (!selectedComponents.Any())
+        {
+            MessageBox.Show("Выберите хотя бы один компонент для расчета!");
+            return;
+        }
+
+        // Экспортируем данные в Word
+        ExportToWord(selectedComponents, totalPrice);
+
+        // Вычисляем и показываем общую стоимость
         foreach (var component in selectedComponents)
         {
             totalPrice += component.Price;
@@ -160,6 +174,87 @@ public partial class MainWindow : Window
                     SyncPricesWithComponents(); // Синхронизируем цены с компонентами
                 }
             }
+        }
+    }
+
+    private void ExportToWord(List<ComponentData> selectedComponents, decimal totalPrice)
+    {
+        try
+        {
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string filePath = Path.Combine(desktopPath, "Calculation_Report.docx");
+
+            using (WordprocessingDocument wordDoc = WordprocessingDocument.Create(filePath, WordprocessingDocumentType.Document))
+            {
+                MainDocumentPart mainPart = wordDoc.AddMainDocumentPart();
+                mainPart.Document = new Document();
+                Body body = new Body();
+
+                // Создаем таблицу
+                Table table = new Table();
+
+                // Стиль таблицы (границы)
+                TableProperties tableProps = new TableProperties(
+                    new TableBorders(
+                        new TopBorder() { Val = BorderValues.Single, Size = 4 },
+                        new BottomBorder() { Val = BorderValues.Single, Size = 4 },
+                        new LeftBorder() { Val = BorderValues.Single, Size = 4 },
+                        new RightBorder() { Val = BorderValues.Single, Size = 4 },
+                        new InsideHorizontalBorder() { Val = BorderValues.Single, Size = 4 },
+                        new InsideVerticalBorder() { Val = BorderValues.Single, Size = 4 }
+                    )
+                );
+                table.Append(tableProps);
+
+                // Заголовки таблицы
+                TableRow headerRow = new TableRow();
+                headerRow.Append(
+                    new TableCell(new Paragraph(new Run(new Text("BOM имя")))),
+                    new TableCell(new Paragraph(new Run(new Text("Кол-во")))),
+                    new TableCell(new Paragraph(new Run(new Text("Цена за один"))))
+                );
+                table.Append(headerRow);
+
+                // Группируем компоненты по BomName и подсчитываем количество
+                var groupedComponents = selectedComponents.GroupBy(c => c.BomName)
+                                                        .Select(g => new { BomName = g.Key, Count = g.Count(), Price = g.First().Price });
+                
+                // Заполняем данные из сгруппированных компонентов
+                foreach (var group in groupedComponents)
+                {
+                    TableRow dataRow = new TableRow();
+                    dataRow.Append(
+                        new TableCell(new Paragraph(new Run(new Text(group.BomName)))),
+                        new TableCell(new Paragraph(new Run(new Text(group.Count.ToString())))),
+                        new TableCell(new Paragraph(new Run(new Text(group.Price.ToString("C",System.Globalization.CultureInfo.InvariantCulture)))))
+                    );
+                    table.Append(dataRow);
+                }
+
+                // Вычисляем общую стоимость для строки "Итого"
+                totalPrice = groupedComponents.Sum(g => g.Price * g.Count);
+
+                // Строка "Итого"
+                TableRow totalRow = new TableRow();
+                totalRow.Append(
+                    new TableCell(new Paragraph(new Run(new Text("Итого")))),
+                    new TableCell(new Paragraph(new Run(new Text(groupedComponents.Sum(g => g.Count).ToString())))),
+                    new TableCell(new Paragraph(new Run(new Text(totalPrice.ToString("C",System.Globalization.CultureInfo.InvariantCulture)))))
+                );
+                // Делаем текст "Итого" жирным
+                totalRow.Descendants<Run>().First().RunProperties = new RunProperties(new Bold());
+                table.Append(totalRow);
+
+                body.Append(table);
+                mainPart.Document.Append(body);
+                mainPart.Document.Save();
+            }
+
+            MessageBox.Show($"Документ сохранён на рабочий стол: {filePath}");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Ошибка при создании документа Word: {ex.Message}");
         }
     }
 }

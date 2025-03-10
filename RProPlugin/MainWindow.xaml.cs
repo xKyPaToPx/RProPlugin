@@ -132,29 +132,6 @@ public partial class MainWindow : Window
         }
     }
 
-    private void CalculatePrice_Click(object sender, RoutedEventArgs e)
-    {
-        decimal totalPrice = 0;
-        var selectedComponents = Components.Where(c => c.IsSelected).ToList();
-        
-        if (!selectedComponents.Any())
-        {
-            MessageBox.Show("Выберите хотя бы один компонент для расчета!");
-            return;
-        }
-
-        // Экспортируем данные в Word
-        ExportToWord(selectedComponents, totalPrice);
-
-        // Вычисляем и показываем общую стоимость
-        foreach (var component in selectedComponents)
-        {
-            totalPrice += component.Price;
-        }
-        
-        MessageBox.Show($"Общая стоимость выбранных компонентов: {totalPrice:C}");
-    }
-
     private void Exit_Click(object sender, RoutedEventArgs e)
     {
         Application.Current.Shutdown();
@@ -176,87 +153,101 @@ public partial class MainWindow : Window
             }
         }
     }
-
-    private void ExportToWord(List<ComponentData> selectedComponents, decimal totalPrice)
+    
+    private void CalculatePrice_Click(object sender, RoutedEventArgs e)
+{
+    var calculationWindow = new CalculationWindow();
+    if (calculationWindow.ShowDialog() == true)
     {
-        try
-        {
-            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            string filePath = Path.Combine(desktopPath, "Calculation_Report.docx");
+        decimal softwarePrice = calculationWindow.SoftwarePrice;
+        decimal controlSystemPrice = calculationWindow.ControlSystemPrice;
 
-            using (WordprocessingDocument wordDoc = WordprocessingDocument.Create(filePath, WordprocessingDocumentType.Document))
-            {
-                MainDocumentPart mainPart = wordDoc.AddMainDocumentPart();
-                mainPart.Document = new Document();
-                Body body = new Body();
+        decimal totalPrice = softwarePrice + controlSystemPrice;
 
-                // Создаем таблицу
-                Table table = new Table();
+        // Экспортируем данные в Word
+        ExportToWord(softwarePrice, controlSystemPrice, totalPrice);
 
-                // Стиль таблицы (границы)
-                TableProperties tableProps = new TableProperties(
-                    new TableBorders(
-                        new TopBorder() { Val = BorderValues.Single, Size = 4 },
-                        new BottomBorder() { Val = BorderValues.Single, Size = 4 },
-                        new LeftBorder() { Val = BorderValues.Single, Size = 4 },
-                        new RightBorder() { Val = BorderValues.Single, Size = 4 },
-                        new InsideHorizontalBorder() { Val = BorderValues.Single, Size = 4 },
-                        new InsideVerticalBorder() { Val = BorderValues.Single, Size = 4 }
-                    )
-                );
-                table.Append(tableProps);
-
-                // Заголовки таблицы
-                TableRow headerRow = new TableRow();
-                headerRow.Append(
-                    new TableCell(new Paragraph(new Run(new Text("BOM имя")))),
-                    new TableCell(new Paragraph(new Run(new Text("Кол-во")))),
-                    new TableCell(new Paragraph(new Run(new Text("Цена за один"))))
-                );
-                table.Append(headerRow);
-
-                // Группируем компоненты по BomName и подсчитываем количество
-                var groupedComponents = selectedComponents.GroupBy(c => c.BomName)
-                                                        .Select(g => new { BomName = g.Key, Count = g.Count(), Price = g.First().Price });
-                
-                // Заполняем данные из сгруппированных компонентов
-                foreach (var group in groupedComponents)
-                {
-                    TableRow dataRow = new TableRow();
-                    dataRow.Append(
-                        new TableCell(new Paragraph(new Run(new Text(group.BomName)))),
-                        new TableCell(new Paragraph(new Run(new Text(group.Count.ToString())))),
-                        new TableCell(new Paragraph(new Run(new Text(group.Price.ToString("C",System.Globalization.CultureInfo.InvariantCulture)))))
-                    );
-                    table.Append(dataRow);
-                }
-
-                // Вычисляем общую стоимость для строки "Итого"
-                totalPrice = groupedComponents.Sum(g => g.Price * g.Count);
-
-                // Строка "Итого"
-                TableRow totalRow = new TableRow();
-                totalRow.Append(
-                    new TableCell(new Paragraph(new Run(new Text("Итого")))),
-                    new TableCell(new Paragraph(new Run(new Text(groupedComponents.Sum(g => g.Count).ToString())))),
-                    new TableCell(new Paragraph(new Run(new Text(totalPrice.ToString("C",System.Globalization.CultureInfo.InvariantCulture)))))
-                );
-                // Делаем текст "Итого" жирным
-                totalRow.Descendants<Run>().First().RunProperties = new RunProperties(new Bold());
-                table.Append(totalRow);
-
-                body.Append(table);
-                mainPart.Document.Append(body);
-                mainPart.Document.Save();
-            }
-
-            MessageBox.Show($"Документ сохранён на рабочий стол: {filePath}");
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Ошибка при создании документа Word: {ex.Message}");
-        }
+        MessageBox.Show($"Общая стоимость: {totalPrice:N2} BYN");
     }
+}
+
+// Обновленный метод ExportToWord
+private void ExportToWord(decimal softwarePrice, decimal controlSystemPrice, decimal totalPrice)
+{
+    try
+    {
+        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string filePath = Path.Combine(desktopPath, "Calculation_Report.docx");
+
+        using (WordprocessingDocument wordDoc = WordprocessingDocument.Create(filePath, WordprocessingDocumentType.Document))
+        {
+            MainDocumentPart mainPart = wordDoc.AddMainDocumentPart();
+            mainPart.Document = new Document();
+            Body body = new Body();
+
+            // Создаем таблицу
+            Table table = new Table();
+
+            // Стиль таблицы (границы)
+            TableProperties tableProps = new TableProperties(
+                new TableBorders(
+                    new TopBorder() { Val = BorderValues.Single, Size = 4 },
+                    new BottomBorder() { Val = BorderValues.Single, Size = 4 },
+                    new LeftBorder() { Val = BorderValues.Single, Size = 4 },
+                    new RightBorder() { Val = BorderValues.Single, Size = 4 },
+                    new InsideHorizontalBorder() { Val = BorderValues.Single, Size = 4 },
+                    new InsideVerticalBorder() { Val = BorderValues.Single, Size = 4 }
+                )
+            );
+            table.Append(tableProps);
+
+            // Заголовки таблицы
+            TableRow headerRow = new TableRow();
+            headerRow.Append(
+                new TableCell(new Paragraph(new Run(new Text("Тип")))),
+                new TableCell(new Paragraph(new Run(new Text("Цена (BYN)"))))
+            );
+            table.Append(headerRow);
+
+            // Строка с ценой разработки ПО
+            TableRow softwareRow = new TableRow();
+            softwareRow.Append(
+                new TableCell(new Paragraph(new Run(new Text("Разработка ПО")))),
+                new TableCell(new Paragraph(new Run(new Text(softwarePrice.ToString("N2")))))
+            );
+            table.Append(softwareRow);
+
+            // Строка с ценой системы управления
+            TableRow controlSystemRow = new TableRow();
+            controlSystemRow.Append(
+                new TableCell(new Paragraph(new Run(new Text("Система управления")))),
+                new TableCell(new Paragraph(new Run(new Text(controlSystemPrice.ToString("N2")))))
+            );
+            table.Append(controlSystemRow);
+
+            // Строка "Итого"
+            TableRow totalRow = new TableRow();
+            totalRow.Append(
+                new TableCell(new Paragraph(new Run(new Text("Итого")))),
+                new TableCell(new Paragraph(new Run(new Text(totalPrice.ToString("N2")))))
+            );
+            // Делаем текст "Итого" жирным
+            totalRow.Descendants<Run>().First().RunProperties = new RunProperties(new Bold());
+            table.Append(totalRow);
+
+            body.Append(table);
+            mainPart.Document.Append(body);
+            mainPart.Document.Save();
+        }
+
+        MessageBox.Show($"Документ сохранён на рабочий стол: {filePath}");
+    }
+    catch (Exception ex)
+    {
+        MessageBox.Show($"Ошибка при создании документа Word: {ex.Message}");
+    }
+}
+   
 }
 
 // Конвертер для видимости (показывает элемент, если значение true)

@@ -90,3 +90,5 @@ C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\Ge
 C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\RProPlugin.csproj.Up2Date
 C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\bin\Debug\net9.0-windows\DocumentFormat.OpenXml.dll
 C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\bin\Debug\net9.0-windows\DocumentFormat.OpenXml.Framework.dll
+C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\CalculationWindow.baml
+C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\CalculationWindow.g.cs

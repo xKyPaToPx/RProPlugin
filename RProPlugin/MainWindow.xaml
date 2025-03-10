@@ -54,7 +54,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <TextBlock Text="{Binding Price, StringFormat=C}" 
+                                <TextBlock Text="{Binding Price, StringFormat={}{0:N2} BYN}" 
                                            Visibility="{Binding HasPrice, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                 <Button Content="Добавить цену" 
                                         Visibility="{Binding HasPrice, Converter={StaticResource InverseBooleanToVisibilityConverter}}" 

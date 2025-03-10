@@ -4,19 +4,15 @@
     "Price": 10000
   },
   {
-    "BomName": "\u041A\u043E\u043D\u0432\u0435\u0439\u0435\u0440",
-    "Price": 200
+    "BomName": "TM125S",
+    "Price": 500.00
   },
   {
-    "BomName": "\u0420\u0430\u0431\u043E\u0442\u043D\u0438\u043A Yakov",
-    "Price": 1.0
+    "BomName": "\u041A\u043E\u043D\u0432\u0435\u0439\u0435\u0440",
+    "Price": 2000
   },
   {
     "BomName": " Applicator machine",
-    "Price": 1000.00
-  },
-  {
-    "BomName": "TM125S",
-    "Price": 500.00
+    "Price": 10000
   }
 ]

@@ -86,9 +86,10 @@ C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\bin\Debug\net9.0-windows\zh
 C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\RProPlugin.csproj.AssemblyReference.cache
 C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\EditSinglePriceWindow.baml
 C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\EditSinglePriceWindow.g.cs
-C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\GeneratedInternalTypeHelper.g.cs
 C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\RProPlugin.csproj.Up2Date
 C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\bin\Debug\net9.0-windows\DocumentFormat.OpenXml.dll
 C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\bin\Debug\net9.0-windows\DocumentFormat.OpenXml.Framework.dll
 C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\CalculationWindow.baml
 C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\CalculationWindow.g.cs
+C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\GeneratedInternalTypeHelper.g.cs
+C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\App.baml

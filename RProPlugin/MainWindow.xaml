@@ -23,50 +23,74 @@
             <Button Content="Расчет цены" Click="CalculatePrice_Click" Margin="0,0,5,0"/>
             <Button Content="Выход" Click="Exit_Click"/>
         </ToolBar>
-        <DataGrid Grid.Row="1" 
-                  Name="MyDataGrid"
-                  ItemsSource="{Binding Components}" 
-                  AutoGenerateColumns="False" 
-                  CanUserAddRows="False">
-            <DataGrid.Columns>
-                <!-- Колонка с чекбоксом -->
-                <DataGridTemplateColumn Header="Выбрать" Width="Auto">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" 
-                                      HorizontalAlignment="Center"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <!-- Колонка с именем -->
-                <DataGridTextColumn Header="Имя" 
-                                    Binding="{Binding Name}" 
-                                    Width="*"/>
-                <DataGridTextColumn Header="BOM имя" 
-                                    Binding="{Binding BomName}" 
-                                    Width="*"/>
-                <!-- Колонка с категорией -->
-                <DataGridTextColumn Header="Категория" 
-                                    Binding="{Binding Category}" 
-                                    Width="*"/>
-                <!-- Новый столбец Цена -->
-                <DataGridTemplateColumn Header="Цена" Width="*">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <TextBlock Text="{Binding Price, StringFormat={}{0:N2} BYN}" 
-                                           Visibility="{Binding HasPrice, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                <Button Content="Добавить цену" 
-                                        Visibility="{Binding HasPrice, Converter={StaticResource InverseBooleanToVisibilityConverter}}" 
-                                        Click="AddPriceForComponent_Click" 
-                                        Tag="{Binding BomName}" 
-                                        Width="100" 
-                                        Margin="5,0"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+        
+        <!-- Добавляем TabControl -->
+        <TabControl Grid.Row="1">
+            <!-- Вкладка "Основные компоненты" -->
+            <TabItem Header="Основные компоненты">
+                <DataGrid Name="MyDataGrid"
+                          ItemsSource="{Binding Components}" 
+                          AutoGenerateColumns="False" 
+                          CanUserAddRows="False">
+                    <DataGrid.Columns>
+                        <!-- Колонка с чекбоксом -->
+                        <DataGridTemplateColumn Header="Выбрать" Width="Auto">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" 
+                                              HorizontalAlignment="Center"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <!-- Колонка с именем -->
+                        <DataGridTextColumn Header="Имя" 
+                                            Binding="{Binding Name}" 
+                                            Width="*"/>
+                        <DataGridTextColumn Header="BOM имя" 
+                                            Binding="{Binding BomName}" 
+                                            Width="*"/>
+                        <!-- Колонка с категорией -->
+                        <DataGridTextColumn Header="Категория" 
+                                            Binding="{Binding Category}" 
+                                            Width="*"/>
+                        <!-- Новый столбец Цена -->
+                        <DataGridTemplateColumn Header="Цена" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <TextBlock Text="{Binding Price, StringFormat={}{0:N2} BYN}" 
+                                                   Visibility="{Binding HasPrice, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                        <Button Content="Добавить цену" 
+                                                Visibility="{Binding HasPrice, Converter={StaticResource InverseBooleanToVisibilityConverter}}" 
+                                                Click="AddPriceForComponent_Click" 
+                                                Tag="{Binding BomName}" 
+                                                Width="100" 
+                                                Margin="5,0"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            
+            <!-- Вкладка "Ковейры" -->
+            <TabItem Header="Ковейры">
+                <DataGrid Name="CoversDataGrid"
+                          AutoGenerateColumns="False" 
+                          CanUserAddRows="False">
+                    <!-- Здесь можно добавить колонки для ковейров -->
+                </DataGrid>
+            </TabItem>
+            
+            <!-- Вкладка "Ограждения" -->
+            <TabItem Header="Ограждения">
+                <DataGrid Name="FencesDataGrid"
+                          AutoGenerateColumns="False" 
+                          CanUserAddRows="False">
+                    <!-- Здесь можно добавить колонки для ограждений -->
+                </DataGrid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

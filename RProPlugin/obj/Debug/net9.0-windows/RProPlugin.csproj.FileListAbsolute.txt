@@ -65,7 +65,6 @@ D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\RProPlugin.genruntimeconf
 D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\ref\RProPlugin.dll
 D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\EditSinglePriceWindow.baml
 D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\EditSinglePriceWindow.g.cs
-D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\GeneratedInternalTypeHelper.g.cs
 C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\bin\Debug\net9.0-windows\Xceed.Wpf.AvalonDock.NET5.dll
 C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\bin\Debug\net9.0-windows\Xceed.Wpf.AvalonDock.Themes.Aero.NET5.dll
 C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\bin\Debug\net9.0-windows\Xceed.Wpf.AvalonDock.Themes.Metro.NET5.dll
@@ -93,3 +92,10 @@ C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\Ca
 C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\CalculationWindow.g.cs
 C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\GeneratedInternalTypeHelper.g.cs
 C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\App.baml
+D:\Code\RProPlugin\RProPlugin\bin\Debug\net9.0-windows\DocumentFormat.OpenXml.dll
+D:\Code\RProPlugin\RProPlugin\bin\Debug\net9.0-windows\DocumentFormat.OpenXml.Framework.dll
+D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\CalculationWindow.baml
+D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\App.baml
+D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\CalculationWindow.g.cs
+D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\Styles\Styles.baml
+D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\GeneratedInternalTypeHelper.g.cs

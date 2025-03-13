@@ -88,7 +88,52 @@
                 <DataGrid Name="FencesDataGrid"
                           AutoGenerateColumns="False" 
                           CanUserAddRows="False">
-                    <!-- Здесь можно добавить колонки для ограждений -->
+                    <DataGrid.Columns>
+                        <!-- Колонка с чекбоксом -->
+                        <DataGridTemplateColumn Header="Выбрать" Width="Auto">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" 
+                                              HorizontalAlignment="Center"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Наименование" Binding="{Binding Name}" Width="200"/>
+                        <DataGridTextColumn Header="BOM имя" Binding="{Binding BOMName}" Width="200"/>
+                        <DataGridTextColumn Header="Высота ограждения" Binding="{Binding FenceHeight}" Width="150"/>
+                        <DataGridTextColumn Header="Длина ограждения" Binding="{Binding FenceLength}" Width="150"/>
+                        <DataGridTextColumn Header="Высота стойки" Binding="{Binding StandHeight}" Width="150"/>
+                        <!-- Столбец цены за высоту -->
+                        <DataGridTemplateColumn Header="Цена за высоту" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <TextBlock Text="{Binding PricePerHeight, StringFormat={}{0:N2} BYN}" 
+                                                   Visibility="{Binding HasPrice, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                        <TextBlock Text="Нет цены" 
+                                                   Visibility="{Binding HasPrice, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <!-- Столбец цены за ширину -->
+                        <DataGridTemplateColumn Header="Цена за ширину" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <TextBlock Text="{Binding PricePerWidth, StringFormat={}{0:N2} BYN}" 
+                                                   Visibility="{Binding HasPrice, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                        <Button Content="Добавить цену" 
+                                                Visibility="{Binding HasPrice, Converter={StaticResource InverseBooleanToVisibilityConverter}}" 
+                                                Click="AddPriceForFencing_Click" 
+                                                Tag="{Binding BOMName}" 
+                                                Width="100" 
+                                                Margin="5,0"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
         </TabControl>

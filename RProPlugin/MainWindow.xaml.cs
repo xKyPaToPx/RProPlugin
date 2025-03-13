@@ -16,28 +16,64 @@ namespace RProPlugin;
 
 public partial class MainWindow : Window
 {
-    ObservableCollection<ComponentData> Components { get; set; }
+    private ObservableCollection<ComponentData> Components { get; set; }
     private ObservableCollection<ComponentPrice> Prices { get; set; } = new ObservableCollection<ComponentPrice>();
+    private ObservableCollection<Fencing> Fencings { get; set; } = new ObservableCollection<Fencing>();
+    private ObservableCollection<FencingPrice> FencingPrices { get; set; } = new ObservableCollection<FencingPrice>();
     
-    private string jsonFilePath = "../../../specification.json";
+    private string jsonFilePath = "../../../specificationMain.json";
     private string jsonPricesFilePath = "../../../prices.json";
+    private string jsonFencingFilePath = "../../../specificationFenc.json";
+    private string jsonFencingPricesFilePath = "../../../fencingPrices.json";
     
     public MainWindow()
     {
+        Components = new ObservableCollection<ComponentData>();
+        Prices = new ObservableCollection<ComponentPrice>();
+        Fencings = new ObservableCollection<Fencing>();
+        FencingPrices = new ObservableCollection<FencingPrice>();
         InitializeComponent();
-        Components = new ObservableCollection<ComponentData>
-        {
-            new ComponentData { Name = "Объект1", BomName = "BOM1", Category = "Категория1" },
-            new ComponentData { Name = "Объект2", BomName = "BOM2", Category = "Категория2" },
-            new ComponentData { Name = "Объект3", BomName = "BOM3", Category = "Категория3" }
-        };
         LoadPrices(); // Загружаем цены при инициализации
+        LoadFencingPrices(); // Загружаем цены ограждений при инициализации
+        LoadMain();
+        LoadFencings(); // Загружаем ограждения при инициализации
         SyncPricesWithComponents(); // Синхронизируем цены с компонентами
+        SyncPricesWithFencings(); // Синхронизируем цены с ограждениями
         MyDataGrid.ItemsSource = Components;
+        FencesDataGrid.ItemsSource = Fencings;
         DataContext = this;
     }
 
-    private void LoadJson()
+    private void LoadFencings()
+    {
+        if (File.Exists(jsonFencingFilePath))
+        {
+            try
+            {
+                string json = File.ReadAllText(jsonFencingFilePath);
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                var fencings = JsonSerializer.Deserialize<List<Fencing>>(json, options) ?? new List<Fencing>();
+
+                Fencings.Clear();
+                foreach (var fencing in fencings)
+                {
+                    if (fencing != null)
+                    {
+                        Fencings.Add(fencing);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при загрузке спецификации ограждений: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+    }
+
+    private void LoadMain()
     {
         if (File.Exists(jsonFilePath))
         {
@@ -60,18 +96,10 @@ public partial class MainWindow : Window
                 }
                 SyncPricesWithComponents(); // Синхронизируем цены после загрузки
             }
-            catch (JsonException ex)
-            {
-                MessageBox.Show($"Ошибка при парсинге JSON: {ex.Message}");
-            }
             catch (Exception ex)
             {
-                MessageBox.Show($"Неизвестная ошибка при загрузке JSON: {ex.Message}");
+                MessageBox.Show($"Ошибка при загрузке спецификации: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
-        else
-        {
-            MessageBox.Show("JSON-файл не найден!");
         }
     }
 
@@ -116,18 +144,77 @@ public partial class MainWindow : Window
         }
     }
 
+    private void LoadFencingPrices()
+    {
+        if (File.Exists(jsonFencingPricesFilePath))
+        {
+            try
+            {
+                string json = File.ReadAllText(jsonFencingPricesFilePath);
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                var loadedPrices = JsonSerializer.Deserialize<List<FencingPrice>>(json) ?? new List<FencingPrice>();
+                
+                FencingPrices.Clear();
+                foreach (var price in loadedPrices)
+                {
+                    FencingPrices.Add(price);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при загрузке цен ограждений: {ex.Message}");
+            }
+        }
+    }
+
+    private void SaveFencingPrices()
+    {
+        try
+        {
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string json = JsonSerializer.Serialize(FencingPrices.ToList(), options);
+            File.WriteAllText(jsonFencingPricesFilePath, json);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Ошибка при сохранении цен ограждений: {ex.Message}");
+        }
+    }
+
+    private void SyncPricesWithFencings()
+    {
+        foreach (var fencing in Fencings)
+        {
+            var price = FencingPrices.FirstOrDefault(p => p.BomName == fencing.BOMName);
+            if (price != null)
+            {
+                fencing.PricePerHeight = price.PricePerHeight;
+                fencing.PricePerWidth = price.PricePerWidth;
+                fencing.HasPrice = true;
+            }
+            else
+            {
+                fencing.PricePerHeight = 0;
+                fencing.PricePerWidth = 0;
+                fencing.HasPrice = false;
+            }
+        }
+    }
+
     private void ReadJson_Click(object sender, RoutedEventArgs e)
     {
-        LoadJson();
+        LoadMain();
     }
 
     private void EditPrices_Click(object sender, RoutedEventArgs e)
     {
-        var editWindow = new EditPricesWindow(Prices, jsonPricesFilePath);
+        var editWindow = new EditAllPricesWindow(Prices, FencingPrices, jsonPricesFilePath, jsonFencingPricesFilePath);
         if (editWindow.ShowDialog() == true)
         {
             LoadPrices(); // Перезагружаем цены после редактирования
+            LoadFencingPrices(); // Перезагружаем цены ограждений после редактирования
             SyncPricesWithComponents(); // Синхронизируем цены с компонентами
+            SyncPricesWithFencings(); // Синхронизируем цены с ограждениями
             MessageBox.Show("Цены обновлены!");
         }
     }
@@ -155,99 +242,130 @@ public partial class MainWindow : Window
     }
     
     private void CalculatePrice_Click(object sender, RoutedEventArgs e)
-{
-    var calculationWindow = new CalculationWindow();
-    if (calculationWindow.ShowDialog() == true)
     {
-        decimal softwarePrice = calculationWindow.SoftwarePrice;
-        decimal controlSystemPrice = calculationWindow.ControlSystemPrice;
-
-        decimal totalPrice = softwarePrice + controlSystemPrice;
-
-        // Экспортируем данные в Word
-        ExportToWord(softwarePrice, controlSystemPrice, totalPrice);
-
-        MessageBox.Show($"Общая стоимость: {totalPrice:N2} BYN");
-    }
-}
-
-// Обновленный метод ExportToWord
-private void ExportToWord(decimal softwarePrice, decimal controlSystemPrice, decimal totalPrice)
-{
-    try
-    {
-        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        string filePath = Path.Combine(desktopPath, "Calculation_Report.docx");
-
-        using (WordprocessingDocument wordDoc = WordprocessingDocument.Create(filePath, WordprocessingDocumentType.Document))
+        var calculationWindow = new CalculationWindow();
+        if (calculationWindow.ShowDialog() == true)
         {
-            MainDocumentPart mainPart = wordDoc.AddMainDocumentPart();
-            mainPart.Document = new Document();
-            Body body = new Body();
+            decimal softwarePrice = calculationWindow.SoftwarePrice;
+            decimal controlSystemPrice = calculationWindow.ControlSystemPrice;
 
-            // Создаем таблицу
-            Table table = new Table();
+            decimal totalPrice = softwarePrice + controlSystemPrice;
 
-            // Стиль таблицы (границы)
-            TableProperties tableProps = new TableProperties(
-                new TableBorders(
-                    new TopBorder() { Val = BorderValues.Single, Size = 4 },
-                    new BottomBorder() { Val = BorderValues.Single, Size = 4 },
-                    new LeftBorder() { Val = BorderValues.Single, Size = 4 },
-                    new RightBorder() { Val = BorderValues.Single, Size = 4 },
-                    new InsideHorizontalBorder() { Val = BorderValues.Single, Size = 4 },
-                    new InsideVerticalBorder() { Val = BorderValues.Single, Size = 4 }
-                )
-            );
-            table.Append(tableProps);
+            // Экспортируем данные в Word
+            ExportToWord(softwarePrice, controlSystemPrice, totalPrice);
 
-            // Заголовки таблицы
-            TableRow headerRow = new TableRow();
-            headerRow.Append(
-                new TableCell(new Paragraph(new Run(new Text("Тип")))),
-                new TableCell(new Paragraph(new Run(new Text("Цена (BYN)"))))
-            );
-            table.Append(headerRow);
-
-            // Строка с ценой разработки ПО
-            TableRow softwareRow = new TableRow();
-            softwareRow.Append(
-                new TableCell(new Paragraph(new Run(new Text("Разработка ПО")))),
-                new TableCell(new Paragraph(new Run(new Text(softwarePrice.ToString("N2")))))
-            );
-            table.Append(softwareRow);
-
-            // Строка с ценой системы управления
-            TableRow controlSystemRow = new TableRow();
-            controlSystemRow.Append(
-                new TableCell(new Paragraph(new Run(new Text("Система управления")))),
-                new TableCell(new Paragraph(new Run(new Text(controlSystemPrice.ToString("N2")))))
-            );
-            table.Append(controlSystemRow);
-
-            // Строка "Итого"
-            TableRow totalRow = new TableRow();
-            totalRow.Append(
-                new TableCell(new Paragraph(new Run(new Text("Итого")))),
-                new TableCell(new Paragraph(new Run(new Text(totalPrice.ToString("N2")))))
-            );
-            // Делаем текст "Итого" жирным
-            totalRow.Descendants<Run>().First().RunProperties = new RunProperties(new Bold());
-            table.Append(totalRow);
-
-            body.Append(table);
-            mainPart.Document.Append(body);
-            mainPart.Document.Save();
+            MessageBox.Show($"Общая стоимость: {totalPrice:N2} BYN");
         }
+    }
 
-        MessageBox.Show($"Документ сохранён на рабочий стол: {filePath}");
-    }
-    catch (Exception ex)
+    // Обновленный метод ExportToWord
+    private void ExportToWord(decimal softwarePrice, decimal controlSystemPrice, decimal totalPrice)
     {
-        MessageBox.Show($"Ошибка при создании документа Word: {ex.Message}");
+        try
+        {
+            string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string filePath = Path.Combine(desktopPath, "Calculation_Report.docx");
+
+            using (WordprocessingDocument wordDoc = WordprocessingDocument.Create(filePath, WordprocessingDocumentType.Document))
+            {
+                MainDocumentPart mainPart = wordDoc.AddMainDocumentPart();
+                mainPart.Document = new Document();
+                Body body = new Body();
+
+                // Создаем таблицу
+                Table table = new Table();
+
+                // Стиль таблицы (границы)
+                TableProperties tableProps = new TableProperties(
+                    new TableBorders(
+                        new TopBorder() { Val = BorderValues.Single, Size = 4 },
+                        new BottomBorder() { Val = BorderValues.Single, Size = 4 },
+                        new LeftBorder() { Val = BorderValues.Single, Size = 4 },
+                        new RightBorder() { Val = BorderValues.Single, Size = 4 },
+                        new InsideHorizontalBorder() { Val = BorderValues.Single, Size = 4 },
+                        new InsideVerticalBorder() { Val = BorderValues.Single, Size = 4 }
+                    )
+                );
+                table.Append(tableProps);
+
+                // Заголовки таблицы
+                TableRow headerRow = new TableRow();
+                headerRow.Append(
+                    new TableCell(new Paragraph(new Run(new Text("Тип")))),
+                    new TableCell(new Paragraph(new Run(new Text("Цена (BYN)"))))
+                );
+                table.Append(headerRow);
+
+                // Строка с ценой разработки ПО
+                TableRow softwareRow = new TableRow();
+                softwareRow.Append(
+                    new TableCell(new Paragraph(new Run(new Text("Разработка ПО")))),
+                    new TableCell(new Paragraph(new Run(new Text(softwarePrice.ToString("N2")))))
+                );
+                table.Append(softwareRow);
+
+                // Строка с ценой системы управления
+                TableRow controlSystemRow = new TableRow();
+                controlSystemRow.Append(
+                    new TableCell(new Paragraph(new Run(new Text("Система управления")))),
+                    new TableCell(new Paragraph(new Run(new Text(controlSystemPrice.ToString("N2")))))
+                );
+                table.Append(controlSystemRow);
+
+                // Строка "Итого"
+                TableRow totalRow = new TableRow();
+                totalRow.Append(
+                    new TableCell(new Paragraph(new Run(new Text("Итого")))),
+                    new TableCell(new Paragraph(new Run(new Text(totalPrice.ToString("N2")))))
+                );
+                // Делаем текст "Итого" жирным
+                totalRow.Descendants<Run>().First().RunProperties = new RunProperties(new Bold());
+                table.Append(totalRow);
+
+                body.Append(table);
+                mainPart.Document.Append(body);
+                mainPart.Document.Save();
+            }
+
+            MessageBox.Show($"Документ сохранён на рабочий стол: {filePath}");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Ошибка при создании документа Word: {ex.Message}");
+        }
     }
-}
    
+    private void AddPriceForFencing_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is Button button && button.Tag is string bomName)
+        {
+            var fencing = Fencings.FirstOrDefault(f => f.BOMName == bomName);
+            if (fencing != null)
+            {
+                var editPriceWindow = new EditFencingPriceWindow(fencing);
+                if (editPriceWindow.ShowDialog() == true)
+                {
+                    var existingPrice = FencingPrices.FirstOrDefault(p => p.BomName == fencing.BOMName);
+                    if (existingPrice != null)
+                    {
+                        existingPrice.PricePerHeight = fencing.PricePerHeight;
+                        existingPrice.PricePerWidth = fencing.PricePerWidth;
+                    }
+                    else
+                    {
+                        FencingPrices.Add(new FencingPrice
+                        {
+                            BomName = fencing.BOMName,
+                            PricePerHeight = fencing.PricePerHeight,
+                            PricePerWidth = fencing.PricePerWidth
+                        });
+                    }
+                    SaveFencingPrices();
+                    fencing.HasPrice = true;
+                }
+            }
+        }
+    }
 }
 
 // Конвертер для видимости (показывает элемент, если значение true)

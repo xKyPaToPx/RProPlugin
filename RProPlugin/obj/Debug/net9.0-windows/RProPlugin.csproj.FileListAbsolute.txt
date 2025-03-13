@@ -99,3 +99,7 @@ D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\App.baml
 D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\CalculationWindow.g.cs
 D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\Styles\Styles.baml
 D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\GeneratedInternalTypeHelper.g.cs
+D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\EditFencingPriceWindow.baml
+D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\EditFencingPriceWindow.g.cs
+D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\EditAllPricesWindow.baml
+D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\EditAllPricesWindow.g.cs

@@ -1,22 +1,10 @@
 [
   {
-    "BomName": "TM12",
-    "Price": 10000
-  },
-  {
-    "BomName": "TM125S",
-    "Price": 500.00
-  },
-  {
     "BomName": "\u041A\u043E\u043D\u0432\u0435\u0439\u0435\u0440",
     "Price": 2000
   },
   {
     "BomName": " Applicator machine",
     "Price": 10000
-  },
-  {
-    "BomName": "\u041A\u043E\u043D\u0432\u0435\u0439\u0435\u0440 \u043A\u0440\u0443\u0433\u043E\u0432\u043E\u0439",
-    "Price": 0.00
   }
 ]

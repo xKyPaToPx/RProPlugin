@@ -10,6 +10,7 @@
         <!-- Регистрируем конвертеры как ресурсы -->
         <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <local:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+        
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>

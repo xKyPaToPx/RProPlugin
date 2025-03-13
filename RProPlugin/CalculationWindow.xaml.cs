@@ -7,7 +7,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace RProPlugin
 {
-    public partial class CalculationWindow : Window
+    public partial class CalculationWindow 
     {
         public decimal SoftwarePrice { get; private set; }
         public decimal ControlSystemPrice { get; private set; }
@@ -43,75 +43,75 @@ namespace RProPlugin
         }
 
         // Метод для извлечения цены из Excel-файла
-       private decimal ExtractPriceFromExcel(string filePath)
-{
-    using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(filePath, false))
-    {
-        WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart;
-        WorksheetPart worksheetPart = workbookPart.WorksheetParts.First();
-        SheetData sheetData = worksheetPart.Worksheet.Elements<SheetData>().First();
-
-        // Находим индекс столбца "Сумма, руб"
-        int sumColumnIndex = -1;
-        bool isHeaderRow = true;
-
-        foreach (Row row in sheetData.Elements<Row>())
+        private decimal ExtractPriceFromExcel(string filePath)
         {
-            if (isHeaderRow)
+            using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(filePath, false))
             {
-                // Ищем заголовок "Сумма, руб" в первой строке
-                foreach (Cell cell in row.Elements<Cell>())
+                WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart;
+                WorksheetPart worksheetPart = workbookPart.WorksheetParts.First();
+                SheetData sheetData = worksheetPart.Worksheet.Elements<SheetData>().First();
+
+                // Находим индекс столбца "Сумма, руб"
+                int sumColumnIndex = -1;
+                bool isHeaderRow = true;
+
+                foreach (Row row in sheetData.Elements<Row>())
                 {
-                    string cellValue = GetCellValue(cell, workbookPart);
-                    if (cellValue == "Сумма, руб.")
+                    if (isHeaderRow)
                     {
-                        sumColumnIndex = GetColumnIndex(cell.CellReference);
-                        break;
-                    }
-                }
-                isHeaderRow = false;
-            }
-            else
-            {
-                // Ищем строку с текстом "Итого"
-                foreach (Cell cell in row.Elements<Cell>())
-                {
-                    string cellValue = GetCellValue(cell, workbookPart);
-                    if (cellValue.Contains("Итого"))
-                    {
-                        // Получаем значение из столбца "Сумма, руб"
-                        Cell sumCell = row.Elements<Cell>().FirstOrDefault(c => GetColumnIndex(c.CellReference) == sumColumnIndex);
-                        if (sumCell != null)
+                        // Ищем заголовок "Сумма, руб" в первой строке
+                        foreach (Cell cell in row.Elements<Cell>())
                         {
-                            string sumValue = GetCellValue(sumCell, workbookPart);
-                            sumValue = "41045,498471999999";
-                            if (decimal.TryParse(sumValue, out decimal price))
+                            string cellValue = GetCellValue(cell, workbookPart);
+                            if (cellValue == "Сумма, руб.")
                             {
-                                MessageBox.Show(price.ToString());
-                                return price;
+                                sumColumnIndex = GetColumnIndex(cell.CellReference);
+                                break;
                             }
                         }
-                        break;
+                        isHeaderRow = false;
+                    }
+                    else
+                    {
+                        // Ищем строку с текстом "Итого"
+                        foreach (Cell cell in row.Elements<Cell>())
+                        {
+                            string cellValue = GetCellValue(cell, workbookPart);
+                            if (cellValue.Contains("Итого"))
+                            {
+                                // Получаем значение из столбца "Сумма, руб"
+                                Cell sumCell = row.Elements<Cell>().FirstOrDefault(c => GetColumnIndex(c.CellReference) == sumColumnIndex);
+                                if (sumCell != null)
+                                {
+                                    string sumValue = GetCellValue(sumCell, workbookPart);
+                                    sumValue = "41045,498471999999";
+                                    if (decimal.TryParse(sumValue, out decimal price))
+                                    {
+                                        MessageBox.Show(price.ToString());
+                                        return price;
+                                    }
+                                }
+                                break;
+                            }
+                        }
                     }
                 }
+
+                throw new Exception("Не удалось найти строку 'Итого' или столбец 'Сумма, руб'.");
             }
         }
 
-        throw new Exception("Не удалось найти строку 'Итого' или столбец 'Сумма, руб'.");
-    }
-}
-
-// Метод для получения индекса столбца по его буквенному обозначению (A, B, C, ...)
-private int GetColumnIndex(string cellReference)
-{
-    string columnName = new string(cellReference.Where(char.IsLetter).ToArray());
-    int index = 0;
-    foreach (char ch in columnName)
-    {
-        index = (index * 26) + (ch - 'A' + 1);
-    }
-    return index - 1; // Индексация с 0
-}
+        // Метод для получения индекса столбца по его буквенному обозначению (A, B, C, ...)
+        private int GetColumnIndex(string cellReference)
+        {
+            string columnName = new string(cellReference.Where(char.IsLetter).ToArray());
+            int index = 0;
+            foreach (char ch in columnName)
+            {
+                index = (index * 26) + (ch - 'A' + 1);
+            }
+            return index - 1; // Индексация с 0
+        }
 
         // Метод для получения значения ячейки
         private string GetCellValue(Cell cell, WorkbookPart workbookPart)

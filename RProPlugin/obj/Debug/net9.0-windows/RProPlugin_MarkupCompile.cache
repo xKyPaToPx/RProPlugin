@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET9_0;NETCOREAPP
 D:\Code\RProPlugin\RProPlugin\App.xaml
-7709723872
+71269609658
 
-141051111893
+15-1128841564
 208-92906910
-CalculationWindow.xaml;EditAllPricesWindow.xaml;EditFencingPriceWindow.xaml;EditPricesWindow.xaml;EditSinglePriceWindow.xaml;MainWindow.xaml;Styles\Styles.xaml;
+CalculationWindow.xaml;EditAllPricesWindow.xaml;EditFencingPriceWindow.xaml;EditPricesWindow.xaml;EditSinglePriceWindow.xaml;MainWindow.xaml;Themes\DarkTheme.xaml;
 
 False
 

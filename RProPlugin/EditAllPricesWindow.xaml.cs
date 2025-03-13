@@ -6,7 +6,7 @@ using RProPlugin.Models;
 
 namespace RProPlugin;
 
-public partial class EditAllPricesWindow : Window
+public partial class EditAllPricesWindow
 {
     private readonly ObservableCollection<ComponentPrice> _componentPrices;
     private readonly ObservableCollection<FencingPrice> _fencingPrices;

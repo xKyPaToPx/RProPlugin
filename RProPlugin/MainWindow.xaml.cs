@@ -361,8 +361,64 @@ public partial class MainWindow : Window
                         });
                     }
                     SaveFencingPrices();
-                    fencing.HasPrice = true;
+                    // Добавляем вызов синхронизации для обновления всех ограждений
+                    SyncPricesWithFencings();
                 }
+            }
+        }
+    }
+
+    private void SelectAllComponents_Click(object sender, RoutedEventArgs e)
+    {
+        // Проверяем, все ли компоненты выбраны
+        bool allSelected = Components.All(c => c.IsSelected);
+        // Устанавливаем противоположное значение для всех
+        foreach (var component in Components)
+        {
+            component.IsSelected = !allSelected;
+        }
+    }
+
+    private void SelectAllCovers_Click(object sender, RoutedEventArgs e)
+    {
+        if (CoversDataGrid.ItemsSource is IEnumerable<dynamic> covers)
+        {
+            // Проверяем, все ли ковейры выбраны
+            bool allSelected = true;
+            foreach (dynamic cover in covers)
+            {
+                if (!cover.IsSelected)
+                {
+                    allSelected = false;
+                    break;
+                }
+            }
+            // Устанавливаем противоположное значение для всех
+            foreach (dynamic cover in covers)
+            {
+                cover.IsSelected = !allSelected;
+            }
+        }
+    }
+
+    private void SelectAllFences_Click(object sender, RoutedEventArgs e)
+    {
+        if (FencesDataGrid.ItemsSource is IEnumerable<dynamic> fences)
+        {
+            // Проверяем, все ли ограждения выбраны
+            bool allSelected = true;
+            foreach (dynamic fence in fences)
+            {
+                if (!fence.IsSelected)
+                {
+                    allSelected = false;
+                    break;
+                }
+            }
+            // Устанавливаем противоположное значение для всех
+            foreach (dynamic fence in fences)
+            {
+                fence.IsSelected = !allSelected;
             }
         }
     }

@@ -103,3 +103,8 @@ D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\EditFencingPriceWindow.g.
 D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\EditAllPricesWindow.baml
 D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\EditAllPricesWindow.g.cs
 D:\Code\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\Themes\DarkTheme.baml
+C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\EditAllPricesWindow.baml
+C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\EditFencingPriceWindow.baml
+C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\EditAllPricesWindow.g.cs
+C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\EditFencingPriceWindow.g.cs
+C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\obj\Debug\net9.0-windows\Themes\DarkTheme.baml

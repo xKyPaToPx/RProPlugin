@@ -84,7 +84,6 @@ namespace RProPlugin
                                 if (sumCell != null)
                                 {
                                     string sumValue = GetCellValue(sumCell, workbookPart);
-                                    sumValue = "41045,498471999999";
                                     if (decimal.TryParse(sumValue, out decimal price))
                                     {
                                         MessageBox.Show(price.ToString());
@@ -135,11 +134,11 @@ namespace RProPlugin
             // Если ячейка содержит число или результат вычисления формулы
             else if (cell.DataType == null || cell.DataType.Value == CellValues.Number)
             {
-                // Преобразуем значение в double и округляем до 2 знаков после запятой
-                if (double.TryParse(cellValue, out double numericValue))
+                // Используем инвариантную культуру для парсинга числа с точкой
+                if (double.TryParse(cellValue, NumberStyles.Any, CultureInfo.InvariantCulture, out double numericValue))
                 {
                     numericValue = Math.Round(numericValue, 2); // Округляем до 2 знаков
-                    return numericValue.ToString("F2", CultureInfo.InvariantCulture); // Форматируем как число с 2 знаками
+                    return numericValue.ToString();
                 }
             }
 

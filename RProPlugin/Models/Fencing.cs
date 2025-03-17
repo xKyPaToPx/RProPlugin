@@ -6,8 +6,8 @@ public class Fencing : INotifyPropertyChanged
 {
     private string _name;
     private string _bomName;
-    private double _fenceHeight;
-    private double _fenceLength;
+    private double _height;
+    private double _length;
     private double _standHeight;
     private bool _isSelected;
     private decimal _pricePerHeight = 0; // Значение по умолчанию для цены
@@ -36,20 +36,40 @@ public class Fencing : INotifyPropertyChanged
 
     public double FenceHeight
     {
-        get => _fenceHeight;
+        get => _height;
         set
         {
-            _fenceHeight = value;
+            _height = value;
             OnPropertyChanged(nameof(FenceHeight));
         }
     }
 
     public double FenceLength
     {
-        get => _fenceLength;
+        get => _length;
         set
         {
-            _fenceLength = value;
+            _length = value; 
+            OnPropertyChanged(nameof(FenceLength));
+        }
+    }
+    
+    public double Height
+    {
+        get => _height;
+        set
+        {
+            _height = value;
+            OnPropertyChanged(nameof(FenceHeight));
+        }
+    }
+
+    public double Width
+    {
+        get => _length;
+        set
+        {
+            _length = value; 
             OnPropertyChanged(nameof(FenceLength));
         }
     }

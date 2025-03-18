@@ -13,7 +13,10 @@ public partial class EditFencingPriceWindow : Window
         InitializeComponent();
         _fencing = fencing;
         
-        // Заполняем текстовые поля текущими значениями
+        // Устанавливаем DataContext для привязки BomName
+        DataContext = _fencing;
+        
+        // Устанавливаем текущие значения в текстовые поля
         PricePerHeightTextBox.Text = _fencing.PricePerHeight.ToString();
         PricePerWidthTextBox.Text = _fencing.PricePerWidth.ToString();
     }
@@ -30,8 +33,8 @@ public partial class EditFencingPriceWindow : Window
         }
         else
         {
-            MessageBox.Show("Пожалуйста, введите корректные числовые значения для цен.", "Ошибка", 
-                          MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show("Пожалуйста, введите корректные числовые значения", "Ошибка", 
+                MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 

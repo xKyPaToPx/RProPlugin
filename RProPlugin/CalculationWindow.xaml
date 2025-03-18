@@ -4,7 +4,7 @@
         Title="Расчет стоимости" Height="180" Width="300"
         Style="{StaticResource DialogWindowStyle}"
         WindowStartupLocation="CenterOwner">
-    <Grid Margin="10">
+    <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>

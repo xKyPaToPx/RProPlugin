@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET9_0;NETCOREAPP
 C:\Users\KyPaToP\RiderProjects\RProPlugin\RProPlugin\App.xaml
-71269609658
+8-1659620110
 
-15-1128841564
+171653647612
 2071855726567
-CalculationWindow.xaml;EditAllPricesWindow.xaml;EditFencingPriceWindow.xaml;EditPricesWindow.xaml;EditSinglePriceWindow.xaml;MainWindow.xaml;Themes\DarkTheme.xaml;
+CalculationWindow.xaml;EditAllPricesWindow.xaml;EditConveyorPriceWindow.xaml;EditFencingPriceWindow.xaml;EditPricesWindow.xaml;EditSinglePriceWindow.xaml;MainWindow.xaml;Themes\DarkTheme.xaml;
 
 False
 

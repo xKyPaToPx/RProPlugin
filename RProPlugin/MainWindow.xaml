@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RProPlugin"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="RProPlugin" 
+        WindowState="Maximized"
+        WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <!-- Регистрируем конвертеры как ресурсы -->
         <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -89,8 +91,8 @@
                 </Grid>
             </TabItem>
             
-            <!-- Вкладка "Ковейры" -->
-            <TabItem Header="Ковейры">
+            <!-- Вкладка "Конвейеры" -->
+            <TabItem Header="Конвейеры">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -98,16 +100,87 @@
                     </Grid.RowDefinitions>
                     
                     <Button Content="Выбрать все" 
-                            Click="SelectAllCovers_Click" 
-                            HorizontalAlignment="Left" 
+                            Click="SelectAllConveyors_Click"
+                            HorizontalAlignment="Left"
                             Margin="5"
                             Padding="5,2"/>
                     
-                    <DataGrid Name="CoversDataGrid"
-                             Grid.Row="1"
-                             AutoGenerateColumns="False" 
-                             CanUserAddRows="False">
-                        <!-- Здесь можно добавить колонки для ковейров -->
+                    <DataGrid x:Name="ConveyorsDataGrid"
+                              Grid.Row="1"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False">
+                        <DataGrid.Columns>
+                            <!-- Колонка с чекбоксом -->
+                            <DataGridTemplateColumn Header="Выбрать" Width="Auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" 
+                                                HorizontalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Наименование" 
+                                              Binding="{Binding Name}" 
+                                              Width="200"/>
+                            <DataGridTextColumn Header="BOM имя" 
+                                              Binding="{Binding BomName}" 
+                                              Width="200"/>
+                            <DataGridTextColumn Header="Пресеты" 
+                                                Binding="{Binding Presets}" 
+                                                Width="150"/>
+                            <DataGridTextColumn Header="Ширина конвейера" 
+                                              Binding="{Binding ConveyorWidth}" 
+                                              Width="150"/>
+                            <DataGridTextColumn Header="Высота конвейера" 
+                                              Binding="{Binding ConveyorHeight}" 
+                                              Width="150"/>
+                            <DataGridTextColumn Header="Длина конвейера" 
+                                              Binding="{Binding ConveyorLength}" 
+                                              Width="150"/>
+                            <!-- Столбец цены за высоту -->
+                            <DataGridTemplateColumn Header="Цена за высоту" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding PricePerHeight, StringFormat={}{0:N2} BYN}" 
+                                                      Visibility="{Binding HasPrice, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            <TextBlock Text="Нет цены" 
+                                                      Visibility="{Binding HasPrice, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <!-- Столбец цены за ширину -->
+                            <DataGridTemplateColumn Header="Цена за ширину" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding PricePerWidth, StringFormat={}{0:N2} BYN}" 
+                                                      Visibility="{Binding HasPrice, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            <TextBlock Text="Нет цены" 
+                                                      Visibility="{Binding HasPrice, Converter={StaticResource InverseBooleanToVisibilityConverter}}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <!-- Столбец цены за длину -->
+                            <DataGridTemplateColumn Header="Цена за длину" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding PricePerLength, StringFormat={}{0:N2} BYN}" 
+                                                      Visibility="{Binding HasPrice, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                            <Button Content="Добавить цену" 
+                                                    Visibility="{Binding HasPrice, Converter={StaticResource InverseBooleanToVisibilityConverter}}" 
+                                                    Click="AddPriceForConveyor_Click" 
+                                                    Tag="{Binding Presets}" 
+                                                    Width="100" 
+                                                    Margin="5,0"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
             </TabItem>
@@ -119,6 +192,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
+                    
                     
                     <Button Content="Выбрать все" 
                             Click="SelectAllFences_Click" 

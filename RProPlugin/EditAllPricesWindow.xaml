@@ -37,6 +37,32 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </TabItem>
+
+            <!-- Вкладка цен конвейеров -->
+            <TabItem Header="Конвейеры">
+                <Grid>
+                    <DataGrid x:Name="ConveyorPricesGrid"
+                              ItemsSource="{Binding ConveyorPrices}"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              Margin="5">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Пресет" 
+                                              Binding="{Binding Presets}"
+                                              Width="2*"/>
+                            <DataGridTextColumn Header="Цена за высоту" 
+                                              Binding="{Binding PricePerHeight}"
+                                              Width="*"/>
+                            <DataGridTextColumn Header="Цена за ширину" 
+                                              Binding="{Binding PricePerWidth}"
+                                              Width="*"/>
+                            <DataGridTextColumn Header="Цена за длину" 
+                                              Binding="{Binding PricePerLength}"
+                                              Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
         </TabControl>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">

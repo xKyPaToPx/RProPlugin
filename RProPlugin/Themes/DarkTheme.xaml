@@ -55,20 +55,8 @@
         <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
     </Style>
 
-    <!-- Стили для ScrollViewer -->
-    <Style TargetType="ScrollViewer">
-        <Setter Property="Background" Value="{StaticResource BackgroundBrush}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
-    </Style>
-
-    <!-- Стили для ScrollBar -->
-    <Style TargetType="ScrollBar">
-        <Setter Property="Background" Value="{StaticResource BackgroundBrush}"/>
-        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
-    </Style>
-
     <!-- Стили для DataGrid -->
-    <Style TargetType="DataGrid">
+        <Style TargetType="DataGrid">
         <Setter Property="Background" Value="{StaticResource BackgroundBrush}"/>
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
         <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
@@ -203,6 +191,60 @@
         <Setter Property="Background" Value="{StaticResource BackgroundBrush}"/>
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
         <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToolBar">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="0,0,0,1">
+                        <DockPanel>
+                            <ToggleButton x:Name="OverflowButton"
+                                        DockPanel.Dock="Right"
+                                        Width="24"
+                                        Height="20"
+                                        Margin="2,0,2,0"
+                                        IsChecked="{Binding IsOverflowOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Style="{StaticResource {x:Static ToolBar.ToggleButtonStyleKey}}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border x:Name="Bd" 
+                                                Background="{StaticResource BackgroundBrush}"
+                                                CornerRadius="2"
+                                                SnapsToDevicePixels="true">
+                                            <Path x:Name="Arrow"
+                                                  Width="8"
+                                                  Height="8"
+                                                  Data="M0,0 L4,0 L2,3 Z"
+                                                  Fill="{StaticResource ForegroundBrush}"
+                                                  Margin="2,0,0,0"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource ButtonHoverBrush}"/>
+                                            </Trigger>
+                                            <Trigger Property="IsChecked" Value="true">
+                                                <Setter TargetName="Bd" Property="Background" Value="{StaticResource SelectedBrush}"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <ToolBarPanel x:Name="PART_ToolBarPanel" 
+                                        IsItemsHost="true" 
+                                        Orientation="Horizontal"/>
+                        </DockPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsOverflowOpen" Value="true">
+                            <Setter TargetName="OverflowButton" Property="IsChecked" Value="true"/>
+                        </Trigger>
+                        <Trigger Property="HasOverflowItems" Value="false">
+                            <Setter TargetName="OverflowButton" Property="Visibility" Value="Collapsed"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     
@@ -285,5 +327,93 @@
         <Setter Property="CaretBrush" Value="{StaticResource ForegroundBrush}"/>
         <Setter Property="SelectionBrush" Value="{StaticResource AccentBrush}"/>
         <Setter Property="SelectionOpacity" Value="0.5"/>
+    </Style>
+
+    <!-- Стиль для ScrollBar -->
+    <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="IsTabStop" Value="false"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Rectangle Fill="#FF606060" 
+                             RadiusX="2" 
+                             RadiusY="2"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type ScrollBar}">
+        <Setter Property="Background" Value="#FF303030"/>
+        <Setter Property="BorderBrush" Value="#FF404040"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ScrollBar}">
+                    <Grid>
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="1">
+                            <Track x:Name="PART_Track"
+                                   IsDirectionReversed="true">
+                                <Track.Thumb>
+                                    <Thumb Style="{StaticResource ScrollBarThumb}"/>
+                                </Track.Thumb>
+                            </Track>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Orientation" Value="Horizontal">
+                <Setter Property="Width" Value="Auto"/>
+                <Setter Property="Height" Value="8"/>
+            </Trigger>
+            <Trigger Property="Orientation" Value="Vertical">
+                <Setter Property="Width" Value="8"/>
+                <Setter Property="Height" Value="Auto"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Стиль для ScrollViewer -->
+    <Style TargetType="{x:Type ScrollViewer}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ScrollViewer}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <ScrollContentPresenter Grid.Column="0" Grid.Row="0"/>
+
+                        <ScrollBar x:Name="PART_VerticalScrollBar"
+                                 Grid.Column="1"
+                                 Grid.Row="0"
+                                 Orientation="Vertical"
+                                 ViewportSize="{TemplateBinding ViewportHeight}"
+                                 Maximum="{TemplateBinding ScrollableHeight}"
+                                 Value="{TemplateBinding VerticalOffset}"
+                                 Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"/>
+
+                        <ScrollBar x:Name="PART_HorizontalScrollBar"
+                                 Grid.Column="0"
+                                 Grid.Row="1"
+                                 Orientation="Horizontal"
+                                 ViewportSize="{TemplateBinding ViewportWidth}"
+                                 Maximum="{TemplateBinding ScrollableWidth}"
+                                 Value="{TemplateBinding HorizontalOffset}"
+                                 Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary> 

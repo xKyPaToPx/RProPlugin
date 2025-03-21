@@ -4,5 +4,11 @@
     "PricePerHeight": 10,
     "PricePerWidth": 10,
     "PricePerLength": 10
+  },
+  {
+    "Presets": "Roll Conveyor",
+    "PricePerHeight": 15,
+    "PricePerWidth": 10,
+    "PricePerLength": 5
   }
 ]

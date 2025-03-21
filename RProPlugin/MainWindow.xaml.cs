@@ -516,7 +516,7 @@ public partial class MainWindow : Window
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Ошибка при создании документа Word: {ex.Message}");
+            MessageBox.Show($"Ошибка при создании документа Word: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
    

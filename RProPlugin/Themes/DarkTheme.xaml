@@ -416,4 +416,13 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!-- Цвета для MessageBox -->
+    <Color x:Key="MessageBoxBackgroundColor">#FF1E1E1E</Color>
+    <Color x:Key="MessageBoxForegroundColor">#FFFFFFFF</Color>
+    <Color x:Key="MessageBoxBorderColor">#FF3E3E3E</Color>
+
+    <SolidColorBrush x:Key="MessageBoxBackgroundBrush" Color="{StaticResource MessageBoxBackgroundColor}"/>
+    <SolidColorBrush x:Key="MessageBoxForegroundBrush" Color="{StaticResource MessageBoxForegroundColor}"/>
+    <SolidColorBrush x:Key="MessageBoxBorderBrush" Color="{StaticResource MessageBoxBorderColor}"/>
 </ResourceDictionary> 
